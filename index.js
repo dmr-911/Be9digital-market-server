@@ -19,6 +19,7 @@ async function run(){
         const database = client.db("be9digital");
         const electric_products = database.collection("electric_products");
         const glasses = database.collection("glass_collection");
+        const orders = database.collection("orders");
 
         //GET Methods
         app.get('/e_products', async (req, res) => {
@@ -43,7 +44,14 @@ async function run(){
             }
             const products = await cursor.toArray();
             res.json(products);
-        })
+        });
+
+        // POST Methods
+        app.post('/orders', async(req, res)=>{
+            const item = req.body;
+            const result = await orders.insertOne(item);
+            res.json(result);
+        });
     }
     finally{
         // await client.close();
