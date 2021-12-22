@@ -33,6 +33,17 @@ async function run(){
             const products = await cursor.toArray();
             res.send(products);
         });
+        app.get('/glasses', async(req, res)=>{
+            const home = req.query.home;
+            let cursor;
+            if(home){
+                cursor = glasses.find({}).limit(8);
+            }else{
+                cursor = glasses.find({});
+            }
+            const products = await cursor.toArray();
+            res.json(products);
+        })
     }
     finally{
         // await client.close();
