@@ -21,6 +21,7 @@ async function run(){
         const electric_products = database.collection("electric_products");
         const glasses = database.collection("glass_collection");
         const orders = database.collection("orders");
+        const usersCollection = database.collection("users");
 
         //GET Methods
         app.get('/e_products', async (req, res) => {
@@ -59,6 +60,12 @@ async function run(){
             res.json(result);
         });
 
+        app.post('/users', async (req, res)=>{
+            const item = req.body;
+            const result = await usersCollection.insertOne(item);
+            res.json(result)
+        });
+
         // Payment
         app.post('/create-payment-intent', async (req, res)=>{
             const payInfo = req.body;
@@ -84,6 +91,10 @@ async function run(){
             };
             const result = await orders.updateOne(filter, updateDoc);
             res.json(result);
+        });
+
+        app.put('/users', async (req, res)=>{
+
         });
     }
     finally{
