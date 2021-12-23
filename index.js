@@ -96,6 +96,10 @@ app.get('/', (req, res)=>{
     res.send('Hello World!')
 });
 
+app.get('/hello', (req, res)=>{
+    res.send('Hello mizan')
+})
+
 app.listen(port, ()=>{
     console.log(`My server running at port : ${port}`)
 })
