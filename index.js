@@ -4,6 +4,7 @@ const port = process.env.PORT || 5000;
 require('dotenv').config();
 const cors = require('cors');
 const { MongoClient } = require("mongodb");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 // Middleware
 app.use(cors());
@@ -57,6 +58,20 @@ async function run(){
             const result = await orders.insertOne(item);
             res.json(result);
         });
+
+        // Payment
+        app.post('/create-payment-intent', async (req, res)=>{
+            const payInfo = req.body;
+            const amount = payInfo.price * 100;
+            const payIntent = await stripe.paymentIntents.create({
+                amount: amount,
+                currency : 'usd',
+                payment_method_types: ['card']
+            });
+            res.json({clientSecret : payIntent.client_secret})
+        })
+
+        // PUT Methods
     }
     finally{
         // await client.close();
