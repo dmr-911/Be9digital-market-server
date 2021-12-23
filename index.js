@@ -75,6 +75,7 @@ async function run(){
         app.put('/orders/:id', async (req, res)=>{
             const id = req.params.id;
             const payment = req.body;
+            console.log(payment);
             const filter = {id : id};
             const updateDoc = {
                 $set: {
