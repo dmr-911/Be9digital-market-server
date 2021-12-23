@@ -72,6 +72,18 @@ async function run(){
         })
 
         // PUT Methods
+        app.put('/orders/:id', async (req, res)=>{
+            const id = req.params.id;
+            const payment = req.body;
+            const filter = {id : id};
+            const updateDoc = {
+                $set: {
+                    payment : payment
+                }
+            };
+            const result = await orders.updateOne(filter, updateDoc);
+            res.json(result);
+        });
     }
     finally{
         // await client.close();
