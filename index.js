@@ -190,6 +190,16 @@ async function run(){
             }
 
           });
+
+          app.put('/myOrders/approve/:id', async (req, res) => {
+            const id = req.params.id;
+            const status = req.body.status;
+            console.log(status, id);
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = { $set: { status: status } };
+            const result = await orders.updateOne(filter, updateDoc);
+            res.json(result);
+          });
     }
     finally{
         // await client.close();
