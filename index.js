@@ -47,6 +47,8 @@ async function run(){
         const glasses = database.collection("glass_collection");
         const orders = database.collection("orders");
         const usersCollection = database.collection("users");
+        const newOdersCollection = database.collection("newOrders");
+        const reviewsCollection = database.collection("reviews");
 
         //GET Methods
         app.get('/e_products', async (req, res) => {
@@ -116,7 +118,7 @@ async function run(){
                 shipping,
                 img : imgBuffer
             };
-            const result = await glasses.insertOne(product);
+            const result = await newOdersCollection.insertOne(product);
             res.json(result);
         })
 
@@ -136,7 +138,13 @@ async function run(){
                 payment_method_types: ['card']
             });
             res.json({clientSecret : payIntent.client_secret})
-        })
+        });
+
+        app.post('/reviews', async (req, res)=>{
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.json(result);
+          });
 
         // PUT Methods
         app.put('/orders/:id', async (req, res)=>{
