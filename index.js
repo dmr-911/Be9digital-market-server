@@ -6,6 +6,7 @@ require('dotenv').config();
 const cors = require('cors');
 const { MongoClient } = require("mongodb");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
+const fileUpload = require('express-fileupload');
 
 // firebase sdk 
 const serviceAccount = require("./be9digital-firebase-adminsdk.json");
@@ -17,6 +18,7 @@ admin.initializeApp({
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());
 
 // Mongodb uri and client
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.jycgq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -92,6 +94,31 @@ async function run(){
             const result = await orders.insertOne(item);
             res.json(result);
         });
+
+        app.post('/addProduct', async(req,res)=>{
+            const name = req.body.name;
+            const price = req.body.price;
+            const key = req.body.key;
+            const stock = req.body.stock;
+            const star = req.body.star;
+            const shipping = req.body.shipping;
+            
+            const pic = req.files.img;
+            const picData = pic.data;
+            const encodedPic = picData.toString('base64');
+            const imgBuffer = Buffer.from(encodedPic, 'base64');
+            const product = {
+                key,
+                name, 
+                price, 
+                stock,
+                star,
+                shipping,
+                img : imgBuffer
+            };
+            const result = await glasses.insertOne(product);
+            res.json(result);
+        })
 
         app.post('/users', async (req, res)=>{
             const item = req.body;
