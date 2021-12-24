@@ -7,6 +7,7 @@ const cors = require('cors');
 const { MongoClient } = require("mongodb");
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const fileUpload = require('express-fileupload');
+const ObjectId = require('mongodb').ObjectId;
 
 // firebase sdk 
 const serviceAccount = require("./be9digital-firebase-adminsdk.json");
@@ -75,9 +76,16 @@ async function run(){
             res.json(products);
         });
         app.get('/orders', async(req, res)=>{
-            const cursor = orders.find({});
-            const products = await cursor.toArray();
-            res.json(products);
+            const email = req.query.email;
+            let cursor;
+            if (email) {
+              cursor = orders.find({ email: email })
+            }
+            else {
+              cursor = orders.find({});
+            }
+            const result = await cursor.toArray();
+            res.json(result);
         });
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
@@ -191,13 +199,28 @@ async function run(){
 
           });
 
-          app.put('/myOrders/approve/:id', async (req, res) => {
+          app.put('/approve/:id', async (req, res) => {
             const id = req.params.id;
             const status = req.body.status;
             console.log(status, id);
             const filter = { _id: ObjectId(id) };
             const updateDoc = { $set: { status: status } };
             const result = await orders.updateOne(filter, updateDoc);
+            res.json(result);
+          });
+
+
+          // DELETE API
+          app.delete('/orders/:id', async (req, res) =>{
+            const user = req.params.id;
+            const query = { _id: ObjectId(user) };
+            const result = await orders.deleteOne(query);
+            res.json(result);
+          });
+          app.delete('/myOrders/:id', async (req, res) =>{
+            const user = req.params.id;
+            const query = { _id: ObjectId(user) };
+            const result = await ordersCollection.deleteOne(query);
             res.json(result);
           });
     }
