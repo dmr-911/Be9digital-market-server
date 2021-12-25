@@ -97,6 +97,11 @@ async function run(){
             }
             res.json({ admin: isAdmin });
           });
+        app.get('/reviews', async(req, res)=>{
+            const cursor = reviewsCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+        });
 
         // POST Methods
         app.post('/orders', async(req, res)=>{
@@ -158,7 +163,6 @@ async function run(){
         app.put('/orders/:id', async (req, res)=>{
             const id = req.params.id;
             const payment = req.body;
-            console.log(payment);
             const filter = {id : id};
             const updateDoc = {
                 $set: {
@@ -202,7 +206,6 @@ async function run(){
           app.put('/approve/:id', async (req, res) => {
             const id = req.params.id;
             const status = req.body.status;
-            console.log(status, id);
             const filter = { _id: ObjectId(id) };
             const updateDoc = { $set: { status: status } };
             const result = await orders.updateOne(filter, updateDoc);
@@ -226,7 +229,6 @@ async function run(){
           app.delete('/eProduct/:id', async (req, res)=> {
             const user = req.params.id;
             const query = { _id: ObjectId(user) };
-            console.log(query);
             const result = await electric_products.deleteOne(query);
             res.json(result);
           });
