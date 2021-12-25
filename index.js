@@ -226,13 +226,14 @@ async function run(){
           app.delete('/eProduct/:id', async (req, res)=> {
             const user = req.params.id;
             const query = { _id: ObjectId(user) };
-            const result = await orders.deleteOne(query);
+            console.log(query);
+            const result = await electric_products.deleteOne(query);
             res.json(result);
           });
           app.delete('/glass/:id', async (req, res)=> {
             const user = req.params.id;
             const query = { _id: ObjectId(user) };
-            const result = await orders.deleteOne(query);
+            const result = await glasses.deleteOne(query);
             res.json(result);
           });
     }
