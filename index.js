@@ -220,7 +220,19 @@ async function run(){
           app.delete('/myOrders/:id', async (req, res) =>{
             const user = req.params.id;
             const query = { _id: ObjectId(user) };
-            const result = await ordersCollection.deleteOne(query);
+            const result = await orders.deleteOne(query);
+            res.json(result);
+          });
+          app.delete('/eProduct/:id', async (req, res)=> {
+            const user = req.params.id;
+            const query = { _id: ObjectId(user) };
+            const result = await orders.deleteOne(query);
+            res.json(result);
+          });
+          app.delete('/glass/:id', async (req, res)=> {
+            const user = req.params.id;
+            const query = { _id: ObjectId(user) };
+            const result = await orders.deleteOne(query);
             res.json(result);
           });
     }
@@ -233,10 +245,6 @@ run().catch(console.dir);
 app.get('/', (req, res)=>{
     res.send('Hello World!')
 });
-
-app.get('/hello', (req, res)=>{
-    res.send('Hello mizan')
-})
 
 app.listen(port, ()=>{
     console.log(`My server running at port : ${port}`)
