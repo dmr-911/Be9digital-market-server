@@ -212,6 +212,15 @@ async function run(){
             res.json(result);
           });
 
+          app.put('/myOrders/cancel/:id', async (req, res) => {
+            const id = req.params.id;
+            const status = req.body.status;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = { $set: { status: status } };
+            const result = await orders.updateOne(filter, updateDoc);
+            res.json(result);
+          });
+
 
           // DELETE API
           app.delete('/orders/:id', async (req, res) =>{
