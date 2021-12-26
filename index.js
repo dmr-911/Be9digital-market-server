@@ -98,7 +98,7 @@ async function run(){
             res.json({ admin: isAdmin });
           });
         app.get('/reviews', async(req, res)=>{
-            const cursor = reviewsCollection.find({});
+            const cursor = reviewsCollection.find({}).limit(4);
             const result = await cursor.toArray();
             res.json(result);
         });
