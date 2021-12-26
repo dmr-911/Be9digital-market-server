@@ -102,6 +102,11 @@ async function run(){
             const result = await cursor.toArray();
             res.json(result);
         });
+        app.get('/newProducts', async (req, res)=>{
+          const cursor = newOdersCollection.find({});
+          const result = await cursor.toArray();
+          res.json(result);
+        })
 
         // POST Methods
         app.post('/orders', async(req, res)=>{
