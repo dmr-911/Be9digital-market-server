@@ -10,7 +10,7 @@ const fileUpload = require('express-fileupload');
 const ObjectId = require('mongodb').ObjectId;
 
 // firebase sdk 
-// const serviceAccount = require("./be9digital-firebase-adminsdk.json");
+const serviceAccount = require("./be9digital-firebase-adminsdk.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
