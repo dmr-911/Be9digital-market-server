@@ -50,6 +50,7 @@ async function run(){
         const usersCollection = database.collection("users");
         const newOdersCollection = database.collection("newOrders");
         const reviewsCollection = database.collection("reviews");
+        const aboutCollection = database.collection("about");
 
         //GET Methods
         app.get('/e_products', async (req, res) => {
@@ -106,7 +107,12 @@ async function run(){
           const cursor = newOdersCollection.find({});
           const result = await cursor.toArray();
           res.json(result);
-        })
+        });
+        app.get('/about', async(req, res)=>{
+          const cursor = aboutCollection.find({});
+          const result = await cursor.toArray();
+          res.json(result);
+        });
 
         // POST Methods
         app.post('/orders', async(req, res)=>{
